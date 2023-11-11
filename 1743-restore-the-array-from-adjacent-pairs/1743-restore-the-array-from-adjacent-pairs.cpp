@@ -1,34 +1,30 @@
 class Solution {
 public:
     vector<int> restoreArray(vector<vector<int>>& a) {
-        map<int,int> mp;
-        map<int,vector<int>> v;
+        unordered_map<int,vector<int>> v;
         
         for(auto it: a){
-            mp[it[0]]++;
-            mp[it[1]]++;
             v[it[0]].push_back(it[1]);
             v[it[1]].push_back(it[0]);
         }
-        int start;
-        for(auto it: mp){
-            if(it.second == 1){
-                start = it.first;
+        vector<int> ans;
+        for(auto it: v){
+            if(it.second.size() == 1){
+                ans.push_back(it.first);
+                ans.push_back(it.second[0]);
                 break;
             }
         }
-        set<int> st;
-        vector<int> ans;
-        while(ans.size()<a.size()){
-            st.insert(start);
-            ans.push_back(start);
-            int next = v[start][0];
-            if(st.find(next)!=st.end()){
-                next = v[start][1];
+        while(ans.size()<a.size()+1){
+            int tail = ans.back();
+            int prev = ans[ans.size()-2];
+            if(v[tail][0]!=prev){
+                ans.push_back(v[tail][0]);
             }
-            start = next;
+            else{
+                ans.push_back(v[tail][1]);
+            }
         }
-        ans.push_back(start);
         return ans;
     }
 };
