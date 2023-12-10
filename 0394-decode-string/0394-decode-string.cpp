@@ -10,13 +10,12 @@ public:
                     st.pop();
                 }
                 st.pop();
-                string x;
+                int val = 0,mult=1;
                 while(!st.empty() && st.top()>='0' && st.top()<='9'){
-                    x+=st.top();
+                    val = val + mult*(st.top()-'0');
+                    mult *= 10;
                     st.pop();
                 }
-                reverse(x.begin(),x.end());
-                int val = stoi(x);
                 for(int i=0;i<val;i++){
                     for(int j=temp.size()-1;j>=0;j--){
                         st.push(temp[j]);
