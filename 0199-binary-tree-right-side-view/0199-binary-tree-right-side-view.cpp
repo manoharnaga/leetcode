@@ -11,21 +11,17 @@
  */
 class Solution {
 public:
-    void rec(TreeNode* root,int cnt,int& h,vector<int>& ans){
+    void rec(TreeNode* root,int cnt,vector<int>& ans){
         if(!root) return;
-        if(cnt>h){
-            h++;
+        if(ans.size()<cnt){
             ans.push_back(root->val);
         }
-        rec(root->right,cnt+1,h,ans);
-        rec(root->left,cnt+1,h,ans);
+        rec(root->right,cnt+1,ans);
+        rec(root->left,cnt+1,ans);
     }
     vector<int> rightSideView(TreeNode* root) {
-        if(!root) return {};
-        int h = 0;
         vector<int> ans;
-        ans.push_back(root->val);
-        rec(root,0,h,ans);
+        rec(root,1,ans);
         return ans;
     }
 };
