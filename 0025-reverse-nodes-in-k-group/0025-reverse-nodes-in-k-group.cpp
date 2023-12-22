@@ -11,21 +11,31 @@
 class Solution {
 public:
     ListNode* reverseKGroup(ListNode* head, int k) {
-        ListNode *x = head, *y = head;
-        while(x){
-            vector<int> v;
-            while(x && v.size()<k){
-                v.push_back(x->val);
-                x = x->next;
-            }
-            x = y;
-            if(v.size()!=k) break;
-            for(int i=v.size()-1;i>=0;i--){
-                x->val = v[i];
-                x = x->next;
-            }
-            y = x;
-        }
+    if (head == nullptr)
+      return nullptr;
+
+    ListNode* tail = head;
+
+    for (int i = 0; i < k; ++i) {
+      // There are less than k nodes in the list, do nothing.
+      if (tail == nullptr)
         return head;
+      tail = tail->next;
     }
+
+    ListNode* newHead = reverse(head, tail);
+    head->next = reverseKGroup(tail, k);
+    return newHead;
+  }
+  ListNode* reverse(ListNode* head, ListNode* tail) {
+    ListNode* prev = nullptr;
+    ListNode* curr = head;
+    while (curr != tail) {
+      ListNode* next = curr->next;
+      curr->next = prev;
+      prev = curr;
+      curr = next;
+    }
+    return prev;
+  }
 };
