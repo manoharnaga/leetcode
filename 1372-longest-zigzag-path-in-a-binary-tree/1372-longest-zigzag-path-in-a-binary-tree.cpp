@@ -11,22 +11,21 @@
  */
 class Solution {
 public:
-    int ans = 0;
+    int ans;
     void rec(TreeNode* root,int cnt,int f){
-        if(!root){
-            ans = max(ans,cnt-1);
-            return;
-        }
-        if(f){
-            rec(root->left,cnt+1,!f);
-            rec(root->right, 1, 1);
+        if(!root) return;
+        ans = max(ans,cnt);
+        if(!f){
+           rec(root->left,1,0);
+           rec(root->right,cnt+1,1);
         }
         else{
-            rec(root->right,cnt+1,!f);
-            rec(root->left, 1, 0);
+           rec(root->left,cnt+1,0);
+           rec(root->right,1,1);
         }
     }
     int longestZigZag(TreeNode* root) {
+        ans = 0;
         rec(root->left,1,0);
         rec(root->right,1,1);
         return ans;
