@@ -11,17 +11,20 @@
  */
 class Solution {
 public:
-    void rec(TreeNode* root,int cnt,vector<int>& ans){
+    vector<int> ans,v;
+    void rec(TreeNode* root,int h){
         if(!root) return;
-        if(ans.size()<cnt){
+        if(!v[h]){
             ans.push_back(root->val);
+            v[h] = 1;
         }
-        rec(root->right,cnt+1,ans);
-        rec(root->left,cnt+1,ans);
+        rec(root->right,h+1);
+        rec(root->left,h+1);
     }
     vector<int> rightSideView(TreeNode* root) {
-        vector<int> ans;
-        rec(root,1,ans);
+        ans.resize(0);
+        v = vector<int>(101,0);
+        rec(root,0);
         return ans;
     }
 };
