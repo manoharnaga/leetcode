@@ -2,15 +2,13 @@ class Solution {
 public:
     int rob(vector<int>& a) {
         int n = a.size();
+        if(n==1) return a[0];
         vector<int> dp(n,0);
-        for(int i=0;i<n;i++){
-            dp[i] = a[i];
-            for(int j=0;j<i-1;j++){
-                dp[i] = max(dp[i],a[i]+dp[j]);
-            }
+        dp[0] = a[0];
+        dp[1] = max(a[0],a[1]);
+        for(int i=2;i<n;i++){
+            dp[i] = max(dp[i-2]+a[i],dp[i-1]);
         }
-        // for(int val: dp) cout<<val<<" ";
-        // cout<<"\n";
-        return *max_element(dp.begin(),dp.end());
+        return dp[n-1];
     }
 };
