@@ -20,6 +20,8 @@ public:
         return ans;
     }
     int maxConsecutiveAnswers(string x, int k) {
+        std::ios::sync_with_stdio(0);
+        std::cin.tie(0);
         int l = func(x,k,'F');
         int r = func(x,k,'T');
         return max(l,r);
