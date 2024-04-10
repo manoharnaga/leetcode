@@ -22,12 +22,14 @@ public:
         rec(root->right,cnt+1);
     }
     int maxLevelSum(TreeNode* root) {
+        std::ios::sync_with_stdio(0);
+        std::cin.tie(0);
         for(int i=0;i<1010;i++) v[i]=-1e6;
         rec(root,1);
         int ind = 1;
         for(int i=1;i<1010;i++){
             if(v[i]>v[ind]){
-                cout<<v[i]<<" "<<i<<"\n";
+                // cout<<v[i]<<" "<<i<<"\n";
                 ind = i;
             }
         }
