@@ -2,21 +2,19 @@ class Solution {
 public:
     int findMinArrowShots(vector<vector<int>>& a) {
         int n = a.size();
-        sort(a.begin(),a.end(),[](const auto& x,const auto& y){
-            if(x[1]==y[1]) return x[0]<y[0];
-            return x[1]<y[1];
-        });
-        int cnt = 0;
-        int prev = a[0][1];
-        for(int i=0;i<n;i++){
-            if(prev >= a[i][0]){
+        sort(a.begin(),a.end());
+        int minval = a[0][1];
+        int cnt = 1;
+        int f = 0;
+        for(int i=1;i<n;i++){
+            if(minval<a[i][0]){
                 cnt++;
+                minval = a[i][1];
             }
             else{
-                prev = a[i][1];
+                minval = min(a[i][1],minval);
             }
         }
-        // cout<<cnt<<"\n";
-        return (n-cnt+1);
+        return cnt;
     }
 };
