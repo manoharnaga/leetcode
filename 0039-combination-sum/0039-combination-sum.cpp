@@ -14,6 +14,10 @@ public:
         rec(a,v,ind+1,x);
     }
     vector<vector<int>> combinationSum(vector<int>& a, int x) {
+        std::ios::sync_with_stdio(0);
+        std::cin.tie(nullptr);
+        std::cout.tie(nullptr);
+        ans.resize(0);
         sort(a.begin(),a.end());
         vector<int> v;
         rec(a,v,0,x);
