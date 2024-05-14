@@ -2,16 +2,19 @@ class Solution {
 public:
     int maxProfit(vector<int>& prices) {
         int n = prices.size();
+        int valley = 0,peak = 0;
+        int i=0;
         int ans = 0;
-        int dp[n],v[n];
-        dp[0] = v[0] = 0;
-        for(int i=1;i<n;i++){
-            dp[i] = v[i] = 0;
-            for(int j=0;j<i;j++){
-                dp[i] = max(dp[i],v[j]+prices[i]-prices[j]);
+        while(i<n){
+            while(i+1<n && prices[i+1]<prices[i]){
+                i++;
             }
-            v[i] = max(v[i-1],dp[i]);
+            valley = i;
+            while(i+1<n && prices[i+1]>prices[i]) i++;
+            peak = i;
+            ans += (prices[peak]-prices[valley]);
+            i++;
         }
-        return *max_element(dp,dp+n);
+        return ans;
     }
 };
