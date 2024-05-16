@@ -1,13 +1,18 @@
 class Solution {
 public:
     vector<int> twoSum(vector<int>& a, int x) {
-        map<int,int> mp;
-        int n = a.size();
-        for(int i=0;i<n;i++){
-            if(mp.find(a[i])!=mp.end()){
-                return {mp[a[i]]+1,i+1};
+        int low = 0,high = a.size()-1;
+        while(low<high){
+            int val = a[low]+a[high];
+            if(val>x){
+                high--;
             }
-            mp[(x-a[i])] = i;
+            else if(val<x){
+                low++;
+            }
+            else{
+                return {low+1,high+1};
+            }
         }
         return {-1,-1};
     }
