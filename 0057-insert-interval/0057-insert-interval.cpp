@@ -1,67 +1,34 @@
 class Solution {
 public:
-    vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& x) {
-        if(intervals.empty()){
-            intervals.push_back(x);
-            return intervals;
-        }
-        int n = intervals.size();
+    vector<vector<int>> insert(vector<vector<int>>& a, vector<int>& x) {
+        int n = a.size();
         int ind = n;
+        vector<vector<int>> ans;
         for(int i=0;i<n;i++){
-            if(intervals[i][0]>x[0]){
-                ind = i-1;
+            if(a[i][0]>=x[0]){
+                ind = i;
                 break;
             }
+            ans.push_back(a[i]);
         }
-        if(ind==n){
-            if(intervals[n-1][1]>=x[0]){
-                intervals[n-1][1] = max(intervals[n-1][1],x[1]);
-            }
-            else{
-                intervals.push_back(x);
-            }
-            return intervals;
+        // cout<<ind<<"\n";
+        
+        if(ind>0 && a[ind-1][1]>=x[0]){
+            ans.back()[1] = max(x[1],a[ind-1][1]);
         }
-        vector<vector<int>> ans;
-        int start,end;
-        if(ind==-1){
-            start = x[0],end = x[1];
-            ind = 0;
-            while(ind<n && end>=intervals[ind][0]){
-                end = max(end,intervals[ind][1]);
-                ind++;
-            }
-            ans.push_back({start,end});
-            while(ind<n){
-                ans.push_back({intervals[ind][0],intervals[ind][1]});
-                ind++;
-            }
-        }  
         else{
-            for(int i=0;i<ind;i++) ans.push_back({intervals[i][0],intervals[i][1]});
-            start = intervals[ind][0];
-            end = intervals[ind][1];
-            if(end>=x[0]){
-                end = max(end,x[1]);
-                // cout<<ind<<end<<"df\n";
-            }
-            else{
-                ans.push_back({start,end});
-                start = x[0];
-                end = x[1];
-            }
-            ind++;
-            // cout<<start<<" "<<end<<"\n";
-            while(ind<n && end>=intervals[ind][0]){
-                end = max(end,intervals[ind][1]);
-                ind++;
-            }
-            ans.push_back({start,end});
-            while(ind<n){
-                ans.push_back({intervals[ind][0],intervals[ind][1]});
-                ind++;
-            }
+            ans.push_back(x);
         }
+        
+        while(ind<n && ans.back()[1]>=a[ind][0]){
+            ans.back()[1] = max(ans.back()[1],a[ind][1]);
+            ind++;
+        }
+        while(ind<n){
+            ans.push_back(a[ind]);
+            ind++;
+        }
+        
         return ans;
     }
 };
