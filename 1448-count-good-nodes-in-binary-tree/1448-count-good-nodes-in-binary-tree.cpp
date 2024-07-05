@@ -11,19 +11,19 @@
  */
 class Solution {
 public:
-    int ans;
-    void rec(TreeNode* root,int maxval){
+    int cnt;
+    void rec(TreeNode* root,int maxsofar){
         if(!root) return;
-        if(root->val>=maxval){
-            maxval = root->val;
-            ans++;
+        if(maxsofar<=root->val){
+            cnt++;
+            maxsofar = root->val;
         }
-        rec(root->left,maxval);
-        rec(root->right,maxval);
+        rec(root->left,maxsofar);
+        rec(root->right,maxsofar);
     }
     int goodNodes(TreeNode* root) {
-        ans = 0;
+        cnt = 0;
         rec(root,-1e5);
-        return ans;
+        return cnt;
     }
 };
