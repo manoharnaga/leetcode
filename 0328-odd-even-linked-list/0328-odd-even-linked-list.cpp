@@ -11,20 +11,23 @@
 class Solution {
 public:
     ListNode* oddEvenList(ListNode* head) {
-        if(!head || !head->next || !head->next->next) return head; // 2
-        
-        // split the list into odd & even, then merge them at the end.
-        ListNode* odd = head;
-        ListNode* even = head->next;
-        ListNode* estart = head->next;
-            
-        while(odd->next && even->next){
-            odd->next = even->next;
-            even->next = even->next->next;
-            odd = odd->next;
+        if(!head || !head->next) return head;
+        ListNode *even,*odd;
+        even = head;
+        odd = head->next;
+        ListNode* oddHead = odd;
+        while(odd){
+            even->next = odd->next;
+            if(!even->next){
+                break;
+            }
             even = even->next;
+            
+            odd->next = even->next;
+            odd = odd->next;
         }
-        odd->next = estart;
+        // cout<<even->val<<" "<<head->val<<"\n";
+        even->next = oddHead;
         return head;
     }
 };
