@@ -11,17 +11,17 @@
  */
 class Solution {
 public:
-    int ans;
-    int rec(TreeNode* root){
+    int rec(TreeNode* root,int& ans){
         if(!root) return 0;
-        int l = rec(root->right);
-        int r = rec(root->left);
-        ans += abs(l)+abs(r);
-        return root->val+l+r-1;
+        int l = rec(root->left,ans);
+        int r = rec(root->right,ans);
+        ans += (abs(l)+abs(r));
+        return (root->val-1+l+r);
     }
+    
     int distributeCoins(TreeNode* root) {
-        ans = 0;
-        rec(root);
+        int ans = 0;
+        rec(root,ans);
         return ans;
     }
 };
