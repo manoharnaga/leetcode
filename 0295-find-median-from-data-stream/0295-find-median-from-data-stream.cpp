@@ -1,35 +1,31 @@
 class MedianFinder {
 private:
-    std::priority_queue<int> maxHeap; // Max-heap for the smaller half
-    std::priority_queue<int, std::vector<int>, std::greater<int>> minHeap; // Min-heap for the larger half
-
+    priority_queue<int> maxH;
+    priority_queue<int,vector<int>,greater<int>> minH;
 public:
-    /** initialize your data structure here. */
-    MedianFinder() {}
-
+    MedianFinder() {
+        
+    }
+    
     void addNum(int num) {
-        // Add to maxHeap (smaller half)
-        maxHeap.push(num);
+        maxH.push(num);
         
-        // Balance heaps: maxHeap should not have more elements than minHeap + 1
-        minHeap.push(maxHeap.top());
-        maxHeap.pop();
+        minH.push(maxH.top());
+        maxH.pop();
         
-        if (maxHeap.size() < minHeap.size()) {
-            maxHeap.push(minHeap.top());
-            minHeap.pop();
+        if(maxH.size()<minH.size()){
+            maxH.push(minH.top());
+            minH.pop();
         }
     }
-
+    
     double findMedian() {
-        if (maxHeap.size() > minHeap.size()) {
-            return maxHeap.top();
-        } else {
-            return (maxHeap.top() + minHeap.top()) / 2.0;
+        if(maxH.size()>minH.size()) return maxH.top();
+        else{
+            return (maxH.top()+minH.top())/2.0;
         }
     }
 };
-
 
 /**
  * Your MedianFinder object will be instantiated and called as such:
