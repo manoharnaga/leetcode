@@ -11,23 +11,27 @@ public:
             v.push_back(0);
             return 0;
         }
-        int d = max(v[0],n-1-v[v.size()-1]);
+        int ind = 0;
+        int d = v[0];
+        
         for(int i=0;i<v.size()-1;i++){
-            d = max(d,(v[i+1]-v[i])/2);
+            if(d<(v[i+1]-v[i])/2){
+                d = (v[i+1]-v[i])/2;
+                ind = i;
+            }
+        }
+        if(d<n-1-v[v.size()-1]){
+            d = n-1-v[v.size()-1];
+            ind = n-1;
+            v.push_back(n-1);
+            return n-1;
         }
         if(d==v[0]){
             v.insert(v.begin(),0);
             return 0;
         }
-        for(int i=0;i<v.size()-1;i++){
-            if(d==((v[i+1]-v[i])/2)){
-                v.insert(v.begin()+i+1,(v[i+1]+v[i])/2);
-                return v[i+1];
-            }
-        }
-        // n-1
-        v.push_back(n-1);
-        return n-1;
+        v.insert(v.begin()+ind+1,(v[ind+1]+v[ind])/2);
+        return v[ind+1];
     }
 
     
