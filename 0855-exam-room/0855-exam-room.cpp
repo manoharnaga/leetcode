@@ -1,35 +1,39 @@
 class ExamRoom {
 public:
-    int N;
-    vector<int> L;
-    ExamRoom(int n) {
-        N = n;
+    int n;
+    vector<int> v;
+    ExamRoom(int x) {
+        n = x;
     }
 
     int seat() {
-        if (L.size() == 0) {
-            L.push_back(0);
+        if(v.empty()){
+            v.push_back(0);
             return 0;
         }
-        int d = max(L[0], N - 1 - L[L.size() - 1]);
-        for (int i = 0; i < L.size() - 1; ++i) d = max(d, (L[i + 1] - L[i]) / 2);
-        if (L[0] == d) {
-            L.insert(L.begin(), 0);
+        int d = max(v[0],n-1-v[v.size()-1]);
+        for(int i=0;i<v.size()-1;i++){
+            d = max(d,(v[i+1]-v[i])/2);
+        }
+        if(d==v[0]){
+            v.insert(v.begin(),0);
             return 0;
         }
-        for (int i = 0; i < L.size() - 1; ++i)
-            if ((L[i + 1] - L[i]) / 2 == d) {
-                L.insert(L.begin() + i + 1, (L[i + 1] + L[i]) / 2);
-                return L[i + 1];
+        for(int i=0;i<v.size()-1;i++){
+            if(d==((v[i+1]-v[i])/2)){
+                v.insert(v.begin()+i+1,(v[i+1]+v[i])/2);
+                return v[i+1];
             }
-        L.push_back(N - 1);
-        return N - 1;
+        }
+        // n-1
+        v.push_back(n-1);
+        return n-1;
     }
 
     
     void leave(int p) {
-        auto it = find(L.begin(),L.end(),p);
-        if(it!=L.end()) L.erase(it);
+        auto it = find(v.begin(),v.end(),p);
+        if(it!=v.end()) v.erase(it);
     }
 };
 
