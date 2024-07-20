@@ -1,26 +1,26 @@
 class Solution {
-public:
+private:
     vector<vector<int>> ans;
-    void rec(vector<int>& a,vector<int>& v,int ind,int x){
-        if(x==0){
+    
+public:
+    void rec(vector<int>& a,int n,vector<int>& v,int sum){
+        if(n<0 || sum<0) return;
+        if(sum==0){
             ans.push_back(v);
             return;
         }
-        if(ind>=a.size()) return;
-        if((x-a[ind])<0) return;
-        v.push_back(a[ind]);
-        rec(a,v,ind,x-a[ind]);
+        
+        v.push_back(a[n]); // take
+        rec(a,n,v,sum-a[n]);
         v.pop_back();
-        rec(a,v,ind+1,x);
+        rec(a,n-1,v,sum); // no take
     }
-    vector<vector<int>> combinationSum(vector<int>& a, int x) {
-        std::ios::sync_with_stdio(0);
-        std::cin.tie(nullptr);
-        std::cout.tie(nullptr);
-        ans.resize(0);
+    vector<vector<int>> combinationSum(vector<int>& a, int target) {
+        ans.clear();
+        int n = a.size();
         sort(a.begin(),a.end());
         vector<int> v;
-        rec(a,v,0,x);
+        rec(a,n-1,v,target);
         return ans;
     }
 };
