@@ -1,6 +1,5 @@
 class Solution {
 public:
-    
     string minWindow(string s, string t) {
         vector<int> map(128,0);
         for (char c : t) {
