@@ -1,43 +1,23 @@
 class MyCalendarTwo {
 public:
-    vector<vector<int>> v,temp;
+    // simplest way to find the max no of overlapping interval points in a range from say 0 to n
+    map<int,int> mp;
     MyCalendarTwo() {
         // nothing
     }
     
     bool book(int start, int end) {
-        if(v.size()<=1){
-            v.push_back({start,end});
-            return true;
-        }
-        vector<int> l,r;
-        l.push_back(start);
-        r.push_back(end);
-        for(auto it: v){
-            l.push_back(it[0]);
-            r.push_back(it[1]);
-        }
-        sort(l.begin(),l.end());
-        sort(r.begin(),r.end());
-        // for(auto it: l) cout<<it<<" ";
-        // cout<<"\n";
-        // for(auto it: r) cout<<it<<" ";
-        // cout<<"\n";
+        mp[start]++; // cnt++ (if start[i]<=end[j])
+        mp[end]--;   // cnt-- (else)
         int cnt = 0;
-        int i=0,j=0;
-        while(i<l.size() && j<l.size()){
-            if(l[i]<r[j]){
-                cnt++;
-                i++;
+        for(auto it: mp){
+            cnt += it.second;
+            if(cnt==3){
+                mp[start]--;
+                mp[end]++;
+                return false;
             }
-            else{
-                cnt--;
-                j++;
-            }
-            if(cnt>2) return false;
         }
-        // cout<<cnt<<"\n";
-        v.push_back({start,end});
         return true;
     }
 };
