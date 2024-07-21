@@ -1,36 +1,30 @@
 class Solution {
 public:
-    typedef long long ll;
-    int mostBooked(int n, vector<vector<int>>& a) {
-        sort(a.begin(),a.end());
-        int m = a.size();
-        priority_queue<pair<ll,ll>,vector<pair<ll,ll>>,greater<pair<ll,ll>>> pq;
-        priority_queue<int,vector<int>,greater<int>> q;
-        for(int i=0;i<n;i++) q.push(i);
-        
-        vector<int> v(m,1);
-        
-        for(auto x: a){
-            int start = x[0],end = x[1];
-            while(!pq.empty() && pq.top().first<=start){
-                q.push(pq.top().second);
-                pq.pop();
+    int mostBooked(int n, vector<vector<int>>& meetings) {
+        vector<int> v(n,0);
+        vector<long long> a(n,0);
+        sort(meetings.begin(),meetings.end());
+        for(auto it:meetings){
+            int start = it[0];
+            int end = it[1];
+            int f = 0;
+            for(int j=0;j<n;j++){ // first available room
+                if(a[j]<=start){
+                    a[j] = end;
+                    v[j]++;
+                    f=1;
+                    break;
+                }
             }
-            if(!q.empty()){
-                v[q.top()]++;
-                pq.push({end,q.top()});
-                q.pop();
+            if(f) continue;
+            int k = 0;
+            for(int j=0;j<n;j++){
+                if(a[k]>a[j]) k=j;
             }
-            else{
-                v[pq.top().second]++;
-                ll val = pq.top().first + end-start;
-                pq.push({val,pq.top().second});
-                pq.pop();
-            }
+            a[k] += (end-start);
+            v[k]++;
         }
-        // for(int val: v) cout<<val<<" ";
-        // cout<<"\n";
-        int ind = max_element(v.begin(),v.end())-v.begin();
-        return ind;
+        int idx = max_element(v.begin(),v.end())-v.begin();
+        return idx;
     }
 };
