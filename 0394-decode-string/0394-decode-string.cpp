@@ -1,30 +1,40 @@
 class Solution {
 public:
-    string decodeString(const string& s, int& i) {
-        string res;
-        
-        while (i < s.length() && s[i] != ']') {
-            if (!isdigit(s[i]))
-                res += s[i++];
-            else {
-                int n = 0;
-                while (i < s.length() && isdigit(s[i]))
-                    n = n * 10 + s[i++] - '0';
-                    
-                i++; // '['
-                string t = decodeString(s, i);
-                i++; // ']'
-                
-                while (n--)
-                    res += t;
+    string rec(char s[],int start,int end){
+        // if(start>end) return "";
+        int i = start;
+        string ans;
+        while(i<=end){
+            // if(s[i]=='[' || s[i]==']') continue;
+            if(isdigit(s[i])){
+                string dig = "";
+                while(s[i]!='['){
+                    dig+=s[i];
+                    i++;
+                }
+                int rep = stoi(dig);
+                int j = i+1;
+                int cnt = 1;
+                while(1){
+                    if(s[j]=='[') cnt++;
+                    if(s[j]==']') cnt--;
+                    if(!cnt) break;
+                    j++;
+                }
+                string res = rec(s,i+1,j-1);
+                for(int k=0;k<rep;k++) ans+=res;
+                i=j+1;
+            }
+            else{
+                ans+=s[i++];
             }
         }
-        
-        return res;
+        return ans;
     }
-
     string decodeString(string s) {
-        int i = 0;
-        return decodeString(s, i);
+        int n = s.size();
+        char v[n];
+        for(int i=0;i<n;i++) v[i]=s[i];
+        return rec(v,0,n-1);
     }
 };
