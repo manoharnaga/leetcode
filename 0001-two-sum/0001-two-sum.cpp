@@ -1,37 +1,18 @@
 class Solution {
 public:
-    vector<int> twoSum(vector<int>& nums, int target) {
-        vector<int> a;
-        a=nums;
-        sort(nums.begin(),nums.end());
-        int n=nums.size();
-        vector<int> ans(2);
-        int start=0,end=n-1;
-        while(start<=end){
-            if((nums[start]+nums[end])==target){
-                ans[0]=nums[start];
-                ans[1]=nums[end];
-                break;
-            }
-            else if((nums[start]+nums[end])>target){
-                end--;
-            }
-            else{
-                start++;
-            }
+    vector<int> twoSum(vector<int>& a, int target) {
+        map<int,int> mp;
+        int n = a.size();
+        vector<pair<int,int>> v;
+        for(int i=0;i<n;i++) v.push_back({a[i],i});
+        sort(v.begin(),v.end());
+        int low=0,high=n-1;
+        while(low<high){
+            int sum = v[low].first+v[high].first;
+            if(sum>target) high--;
+            else if(sum<target) low++;
+            else return {v[low].second,v[high].second};
         }
-        for(int i=0;i<n;i++){
-            if(ans[0]==a[i]){
-                ans[0]=i;
-                break;
-            }
-        }
-        for(int i=0;i<n;i++){
-            if(ans[1]==a[i] && i!=ans[0]){
-                ans[1]=i;
-                break;
-            }
-        }
-        return ans;
+        return {-1,-1};
     }
 };
