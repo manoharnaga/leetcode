@@ -1,25 +1,25 @@
 class Solution {
 public:
-    vector<vector<int>> threeSum(vector<int>& nums) {
-        sort(nums.begin(),nums.end());
-        int n=nums.size();
-        vector<vector<int>> res;
-        for(int i=0;i<n-2;i++){
-               if(i>0 && (nums[i]==nums[i-1]) )continue;
-               int l=i+1, r= n-1;
-               while(l<r){
-                   int sum =nums[i]+nums[l]+nums[r];
-                   
-                   if(sum<0) l++;
-                   else if(sum>0)r--;
-                   else {
-                       res.push_back(vector<int>{nums[i],nums[l],nums[r]});
-                       while(l+1<r && nums[l]==nums[l+1])l++;
-                       while(l<r-1 && nums[r]==nums[r-1]) r--;
-                       l++; r--;
-                   }
-               }
+    vector<vector<int>> threeSum(vector<int>& a) {
+        int n = a.size();
+        vector<vector<int>> ans;
+        sort(a.begin(),a.end());
+        for(int i=0;i<n;i++){
+            if(i>0 && a[i-1]==a[i]) continue;
+            int low = i+1,high = n-1;
+            while(low<high){
+                int x = a[i]+a[low]+a[high];
+                if(x==0){
+                    ans.push_back({a[i],a[low],a[high]});
+                    int plow = low;
+                    int phigh = high;
+                    while(low<high && a[plow]==a[low]) low++;
+                    while(low<high && a[phigh]==a[high]) high--;
+                }
+                else if(x<0)    low++;
+                else            high--;
+            }
         }
-        return res;
+        return ans;
     }
 };
