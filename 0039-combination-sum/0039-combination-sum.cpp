@@ -1,26 +1,25 @@
 class Solution {
-private:
-    vector<vector<int>> ans;
-    
 public:
-    void rec(vector<int>& a,int n,vector<int>& v,int sum){
-        if(n<0 || sum<0) return;
+    vector<vector<int>> ans,dp;
+    void rec(vector<int>& a,vector<int>& v,int n,int sum){
         if(sum==0){
             ans.push_back(v);
             return;
         }
-        
-        v.push_back(a[n]); // take
-        rec(a,n,v,sum-a[n]);
+        if(sum<0 || n<0) return;
+        v.push_back(a[n]);
+        rec(a,v,n,sum-a[n]);
         v.pop_back();
-        rec(a,n-1,v,sum); // no take
+        
+        rec(a,v,n-1,sum);
     }
     vector<vector<int>> combinationSum(vector<int>& a, int target) {
-        ans.clear();
         int n = a.size();
-        sort(a.begin(),a.end());
+        dp = vector<vector<int>> (target+1,vector<int>(n,-1));
+        ans.clear();
         vector<int> v;
-        rec(a,n-1,v,target);
+        sort(a.begin(),a.end());
+        rec(a,v,n-1,target);
         return ans;
     }
 };
