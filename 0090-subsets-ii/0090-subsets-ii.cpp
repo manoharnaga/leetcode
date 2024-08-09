@@ -1,18 +1,20 @@
 class Solution {
 public:
     set<vector<int>> st;
-    void rec(vector<int>& a,vector<int> v,int n){
+    void rec(vector<int>& a,vector<int>& v,int n){
         if(n<0){
-            sort(v.begin(),v.end());
-            st.insert(v);
+            vector<int> v2 = v;
+            sort(v2.begin(),v2.end());
+            st.insert(v2);
             return;
         }
-        rec(a,v,n-1);
-        
         v.push_back(a[n]);
-        rec(a,v,n-1);
+        rec(a,v,n-1); // take
         v.pop_back();
+        
+        rec(a,v,n-1); // no take
     }
+    
     vector<vector<int>> subsetsWithDup(vector<int>& a) {
         int n = a.size();
         vector<int> v;
