@@ -4,10 +4,25 @@ public:
     int valid(vector<string>& q,int r,int c,int n){
         for(int i=0;i<n;i++) if(q[i][c]=='Q') return 0;
         for(int j=0;j<n;j++) if(q[r][j]=='Q') return 0;
-        for(int i=0;i<n;i++){
-            for(int j=0;j<n;j++){
-                if(abs(i-r)==abs(j-c) && q[i][j]=='Q') return 0;
-            }
+        int pr = r,pc = c;
+        while(pr>=0 && pc>=0){
+            if(q[pr][pc]=='Q') return 0;
+            pr--;pc--;
+        }
+        pr = r;pc = c;
+        while(pr<n && pc<n){
+            if(q[pr][pc]=='Q') return 0;
+            pr++;pc++;
+        }
+        pr = r;pc = c;
+        while(pr<n && pc>=0){
+            if(q[pr][pc]=='Q') return 0;
+            pr++;pc--;
+        }
+        pr = r;pc = c;
+        while(pr>=0 && pc<n){
+            if(q[pr][pc]=='Q') return 0;
+            pr--;pc++;
         }
         return 1;
     }
