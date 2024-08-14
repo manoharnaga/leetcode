@@ -1,38 +1,23 @@
 class Solution {
 public:
-    void next_permutation(string& s){
-        int n = s.size();
-        int ind = -1;
-        for(int i=n-1;i>0;i--){
-            if(s[i-1]<s[i]){
-                ind = i;
-                break;
-            }
-        }
-        if(ind==-1){
-            reverse(s.begin(),s.end());
-            return;
-        }
-        
-        reverse(s.begin()+ind,s.end());
-        
-        for(int j=ind;j<n;j++){
-            if(s[ind-1]<s[j]){
-                swap(s[ind-1],s[j]);
-                break;
-            }
-        }
-    }
     string getPermutation(int n, int k) {
-        string s = "";
-        int sz = 1;
-        for(int i=1;i<=n;i++){
-            s += to_string(i);
-            sz *= i;
+        string ans = "";
+        int fact = 1;
+        vector<int> v(n-1);
+        for(int i=1;i<n;i++){
+            fact*=i;
+            v[i-1]=i;
         }
-        for(int i=0;i<k-1;i++){
-            next_permutation(s);
-        } 
-        return s;
+        v.push_back(n);
+        k = k-1;
+        while(1){
+            int idx = (k/fact);
+            ans += to_string(v[idx]);
+            v.erase(v.begin()+idx);
+            if(v.empty()) break;
+            k = k%fact;
+            fact = fact/v.size();
+        }
+        return ans;
     }
 };
