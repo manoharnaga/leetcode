@@ -1,52 +1,46 @@
+
 class Trie {
-    struct Node{
-        Node* v[26];
-        bool end;
-        Node(){
-            for(int i=0;i<26;i++) v[i]=nullptr;
-            end = false;
+public:
+    struct TrieNode{
+        bool isEnd;
+        TrieNode* child[26];
+        TrieNode(){
+            isEnd = false;
+            for(int i=0;i<26;i++) child[i]=NULL;
         }
     };
-public:
-    Node* root;
+
+    TrieNode* T;
     Trie() {
-        root = new Node();
+        T = new TrieNode();
     }
     
     void insert(string word) {
-        Node* trav = root;
+        TrieNode* root = T;
         for(char ch: word){
-            if(!trav->v[ch-'a']){
-                trav->v[ch-'a'] = new Node();
+            if(!root->child[ch-'a']){
+                root->child[ch-'a'] = new TrieNode();
             }
-            trav = trav->v[ch-'a'];
+            root = root->child[ch-'a'];
         }
-        trav->end = true;
+        root->isEnd = true;
     }
     
     bool search(string word) {
-        Node* trav = root;
+        TrieNode* root = T;
         for(char ch: word){
-            if(!trav->v[ch-'a']) return false;
-            trav = trav->v[ch-'a'];
+            if(!root->child[ch-'a']) return false;
+            root = root->child[ch-'a'];
         }
-        return trav->end;
+        return root->isEnd;
     }
     
     bool startsWith(string prefix) {
-        Node* trav = root;
+        TrieNode* root = T;
         for(char ch: prefix){
-            if(!trav->v[ch-'a']) return false;
-            trav = trav->v[ch-'a'];
+            if(!root->child[ch-'a']) return false;
+            root = root->child[ch-'a'];
         }
         return true;
     }
 };
-
-/**
- * Your Trie object will be instantiated and called as such:
- * Trie* obj = new Trie();
- * obj->insert(word);
- * bool param_2 = obj->search(word);
- * bool param_3 = obj->startsWith(prefix);
- */
