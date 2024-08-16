@@ -1,19 +1,20 @@
 class Solution {
 public:
-    int dp[1010][1010];
-    int rec(string& x,string& y,int n,int m){
+    int rec(string& text1, string& text2,int n,int m,vector<vector<int>>& dp){
         if(n<0 || m<0) return 0;
         if(dp[n][m]!=-1) return dp[n][m];
-        if(x[n]==y[m]){
-            dp[n][m] = 1+rec(x,y,n-1,m-1);
-            return dp[n][m];
+
+        if(text1[n]==text2[m]){
+            return dp[n][m] = 1+rec(text1,text2,n-1,m-1,dp);
         }
-        return dp[n][m] = max(rec(x,y,n-1,m),rec(x,y,n,m-1));
+        int l = rec(text1,text2,n-1,m,dp);
+        int r = rec(text1,text2,n,m-1,dp);
+        return dp[n][m]=max(l,r);
     }
     int longestCommonSubsequence(string text1, string text2) {
-        for(int i=0;i<1010;i++)
-            for(int j=0;j<1010;j++)
-                dp[i][j] = -1;
-        return rec(text1,text2,text1.size()-1,text2.size()-1);
+        int n = text1.size();
+        int m = text2.size();
+        vector<vector<int>> dp(n,vector<int>(m,-1));
+        return rec(text1,text2,n-1,m-1,dp);
     }
 };
