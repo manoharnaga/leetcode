@@ -1,34 +1,27 @@
 class Solution {
 public:
-    map<pair<string,int>,int> dp;
 
-    int rec(string& s,string x,int ind,int n,set<string>& st){
+    int rec(string& s,int start,int ind,int n,set<string>& st,vector<vector<int>>& dp){
         if(ind==n){
-            return (st.find(x)!=st.end());
+            return (st.find(s.substr(start,ind-start))!=st.end());
         }
-        if(dp.find({x,ind})!=dp.end())  return dp[{x,ind}];
 
-        x+=s[ind];
-        int take = rec(s,x,ind+1,n,st);
-        x.pop_back();
+        if(dp[start][ind]!=-1)  return dp[start][ind];
+
+        int take = rec(s,start,ind+1,n,st,dp);
         int notake = 0;
-        if(st.find(x)!=st.end()){
-            string tempx = x;
-            x = "";
-            x += s[ind];
-            notake = rec(s,x,ind+1,n,st);
-            x = tempx;
+
+        if(st.find(s.substr(start,ind-start))!=st.end()){
+            notake = rec(s,ind,ind+1,n,st,dp);
         }
-        return dp[{x,ind}] = take || notake;
+        return dp[start][ind] = take || notake;
     }
     
     bool wordBreak(string s, vector<string>& wordDict) {
-        dp.clear();
         set<string> st;
         for(string s: wordDict) st.insert(s);
         int n = s.size();
-        string x="";
-        x+=s[0];
-        return rec(s,x,1,n,st);
+        vector<vector<int>> dp(n,vector<int>(n,-1));
+        return rec(s,0,1,n,st,dp);
     }
 };
