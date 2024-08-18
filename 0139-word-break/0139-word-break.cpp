@@ -1,27 +1,23 @@
 class Solution {
 public:
-
-    int rec(string& s,int start,int ind,int n,set<string>& st,vector<vector<int>>& dp){
-        if(ind==n){
-            return (st.find(s.substr(start,ind-start))!=st.end());
-        }
-
-        if(dp[start][ind]!=-1)  return dp[start][ind];
-
-        int take = rec(s,start,ind+1,n,st,dp);
-        int notake = 0;
-
-        if(st.find(s.substr(start,ind-start))!=st.end()){
-            notake = rec(s,ind,ind+1,n,st,dp);
-        }
-        return dp[start][ind] = take || notake;
-    }
-    
     bool wordBreak(string s, vector<string>& wordDict) {
         set<string> st;
-        for(string s: wordDict) st.insert(s);
+        for(string x: wordDict) st.insert(x);
         int n = s.size();
-        vector<vector<int>> dp(n,vector<int>(n,-1));
-        return rec(s,0,1,n,st,dp);
+        vector<int> dp(n);
+
+        for(int i=0;i<n;i++){
+            if(st.find(s.substr(0,i+1))!=st.end()){
+                dp[i] = true;
+                continue;
+            }
+            for(int j=0;j<i;j++){
+                if(dp[j] && st.find(s.substr(j+1,i-j))!=st.end()){
+                    dp[i] = true;
+                    break;
+                }
+            }   
+        }
+        return dp[n-1];
     }
 };
