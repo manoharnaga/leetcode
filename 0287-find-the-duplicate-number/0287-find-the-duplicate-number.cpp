@@ -1,19 +1,12 @@
 class Solution {
 public:
-    typedef long long ll;
-    int findDuplicate(vector<int>& nums) {
-        int n = nums.size();
-        int slow = nums[0];
-        int fast = nums[0];
-        do {
-            slow = nums[slow];
-            fast = nums[nums[fast]];
-        } while(slow!=fast);
-        fast = nums[0];
-        while(slow != fast){
-            slow = nums[slow];
-            fast = nums[fast];
+    int findDuplicate(vector<int>& a) {
+        int m = a.size();
+        vector<int> v(m);
+        for(int val: a) v[val]++;
+        for(int i=0;i<m;i++){
+            if(v[i]>1) return i;
         }
-        return slow;
+        return -1;
     }
 };
