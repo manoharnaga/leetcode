@@ -11,22 +11,40 @@
  */
 class Solution {
 public:
-    TreeNode* prev;
-    void rec(TreeNode* root){
-        if(!root) return;
-        if(prev){
-           prev->right = root;
-        }
-        prev = root;
-        TreeNode* left = root->left;
-        TreeNode* right = root->right;
-        rec(left);
-        rec(right);
+    
+    pair<TreeNode*,TreeNode*> rec(TreeNode* root){
+        if(!root) return {NULL,NULL};
+        
+        pair<TreeNode*,TreeNode*> l,r;
+        l = rec(root->left);
+        r = rec(root->right);
+        
+        // if(root->val==2){
+        //     cout<<l.first->val<<" "<<r.first->val<<"\n";
+        //     cout<<l.second->val<<" "<<r.second->val<<"\n";
+        // }
+        
         root->left = NULL;
+        if(!l.first && !r.first){
+            return {root,root};
+        }
+        else if(!l.first){
+            root->right = r.first;
+            return {root,r.second};
+        }
+        else if(!r.first){
+            root->right = l.first;
+            return {root,l.second};
+        }
+        else{
+            root->right = l.first;
+            l.second->right = r.first;
+            return {root,r.second};
+        }
     }
     
     void flatten(TreeNode* root) {
-        prev = nullptr;
-        rec(root);
+        pair<TreeNode*,TreeNode*> res = rec(root);
+        root = res.first;
     }
 };
