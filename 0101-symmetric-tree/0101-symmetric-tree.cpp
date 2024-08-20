@@ -11,16 +11,17 @@
  */
 class Solution {
 public:
-    int rec(TreeNode* r1,TreeNode* r2){
-        if(!r1 && !r2) return 1;
-        if(r1 && r2){
-            return (r1->val==r2->val) && rec(r1->left,r2->right) && rec(r1->right,r2->left);
-        }
-        else{
-            return 0;
-        }
+    int rec(TreeNode* l,TreeNode* r){
+        if(!l && !r) return 1;
+        if(!l || !r) return 0;
+        
+        if(l->val!=r->val) return 0;
+        
+        int f1 = rec(l->left,r->right);
+        int f2 = rec(l->right,r->left);
+        return f1 && f2;
     }
     bool isSymmetric(TreeNode* root) {
-        return rec(root,root);
+        return rec(root->left,root->right);
     }
 };
