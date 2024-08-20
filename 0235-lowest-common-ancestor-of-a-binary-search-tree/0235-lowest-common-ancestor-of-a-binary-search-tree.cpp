@@ -10,28 +10,17 @@
 
 class Solution {
 public:
-    vector<TreeNode*> rec(TreeNode* root,TreeNode* p){
-        vector<TreeNode*> v;
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
         while(root){
-            v.push_back(root);
-            if(p->val==root->val){
-                break;
-            }
-            else if(p->val<root->val){
+            if(p->val<root->val && q->val<root->val){
                 root = root->left;
             }
-            else{
+            else if(p->val>root->val && q->val>root->val){
                 root = root->right;
             }
-        }
-        return v;
-    }
-    
-    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
-        vector<TreeNode*> pv = rec(root,p);
-        vector<TreeNode*> qv = rec(root,q);
-        for(int i=min(pv.size(),qv.size())-1;i>=0;i--){
-            if(pv[i]==qv[i]) return pv[i];
+            else{
+                return root;
+            }
         }
         return nullptr;
     }
