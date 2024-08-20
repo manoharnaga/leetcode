@@ -16,9 +16,9 @@ public:
                 s1.pop();
             }
         }
-        int front = s2.top();
+        int popval = s2.top();
         s2.pop();
-        return front;
+        return popval;
     }
     
     int peek() {
@@ -28,8 +28,7 @@ public:
                 s1.pop();
             }
         }
-        int front = s2.top();
-        return front;
+        return s2.top();
     }
     
     bool empty() {
