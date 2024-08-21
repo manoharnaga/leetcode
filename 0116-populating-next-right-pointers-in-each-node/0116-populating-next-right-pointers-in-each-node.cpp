@@ -19,24 +19,14 @@ class Solution {
 public:
     Node* connect(Node* root) {
         if(!root) return NULL;
-        queue<Node*> q;
-        q.push(root);
-        q.push(NULL);
-        while(!q.empty()){
-            Node* cur = q.front();
-            q.pop();
-            if(cur){
-                if(!q.empty()){
-                    cur->next = q.front();
-                }
-                if(cur->left) q.push(cur->left);
-                if(cur->right) q.push(cur->right);
+        
+        if(root->left){
+            root->left->next = root->right;
+            if(root->right && root->next){
+                root->right->next = root->next->left; // damn idea
             }
-            else{
-                if(!q.empty()){
-                    q.push(NULL);
-                }
-            }
+            connect(root->left);
+            connect(root->right);
         }
         return root;
     }
