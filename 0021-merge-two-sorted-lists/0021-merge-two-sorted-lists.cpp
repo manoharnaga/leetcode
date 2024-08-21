@@ -85,7 +85,7 @@ public:
             cur = cur->next;
         }
         
-        while(l1 != nullptr){
+        while(l1){
             cur -> next = l1; 
             l1 = l1 -> next;
             cur = cur -> next;
