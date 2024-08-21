@@ -72,7 +72,7 @@ public:
         // }
         // cout<<endl; 
         
-        while(l1 && l2 != nullptr){
+        while(l1 && l2){
             cout<<l1->val<<" "<<l2->val<<endl; 
             if(l1->val < l2->val){
                 cur->next = l1;
