@@ -10,24 +10,63 @@
  */
 class Solution {
 public:
-    ListNode* reverseKGroup(ListNode* head, int k) {
-        ListNode* trav = head;
-        for(int i=0;i<k;i++){
-            if(!trav) return head;
-            trav = trav->next;
-        }
+    
+    void revList(ListNode* head,ListNode* tail){
+        ListNode *prev = nullptr;
+        ListNode *cur = head;
+        ListNode *next = cur->next;
+        ListNode  *tailnext = tail->next;
         
-        ListNode* cur = head;
-        ListNode* prev = NULL;
-        ListNode* next = NULL;
-        for(int i=0;i<k;i++){
+        while(cur && cur!=tailnext){
             next = cur->next;
             cur->next = prev;
             prev = cur;
             cur = next;
         }
+    }
+    
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        int n = 0;
+        ListNode* cur = head,*prevend;
+        while(cur){
+            n++;
+            cur = cur->next;
+        }
         
-        head->next = reverseKGroup(cur,k);
-        return prev;
+        if(n<k) return head;
+        
+        int cnt = 0,maincnt = 0;
+        
+        int f = 1;
+        ListNode *start,*end, *curend;
+        curend = head;
+        while(maincnt<n){
+            if((n-maincnt)<k){
+                prevend->next = curend;
+                break;
+            }
+            
+            start = end = curend;
+            for(int i=0;i<k-1;i++){
+                end = end->next;
+            }
+            
+            curend = end->next;
+            // cout<<curend->val<<curend->next->val<<"y\n";
+            
+            revList(start,end);
+            
+            
+            if(f){
+                head = end;
+                f = 0;
+            }
+            else{
+                prevend->next = end;
+            }
+            prevend = start;
+            maincnt += k;
+        }
+        return head;
     }
 };
