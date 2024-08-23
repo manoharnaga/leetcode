@@ -15,19 +15,25 @@ public:
         : val(_val), left(_left), right(_right), next(_next) {}
 };
 */
+
 class Solution {
 public:
-    Node* connect(Node* root) {
-        if(!root) return NULL;
+    void rec(Node* root){
+        if(!root) return;
         
         if(root->left){
             root->left->next = root->right;
-            if(root->right && root->next){
-                root->right->next = root->next->left; // damn idea
-            }
-            connect(root->left);
-            connect(root->right);
         }
+        if(root->right && root->next){
+            root->right->next = root->next->left;
+        }
+        
+        rec(root->left);
+        rec(root->right);
+    }
+    
+    Node* connect(Node* root) {
+        rec(root);
         return root;
     }
 };
