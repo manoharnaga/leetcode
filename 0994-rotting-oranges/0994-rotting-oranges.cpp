@@ -1,44 +1,45 @@
 class Solution {
 public:
-    int fcnt,rcnt;
-    void rec(vector<vector<int>>& grid,int i,int j,int n,int m){
-        if(i<0 || j<0 || i==n || j==m || grid[i][j]==0 || grid[i][j]==2) return;
-        grid[i][j] = 2;
-        fcnt--;
-    }
     int orangesRotting(vector<vector<int>>& grid) {
-        fcnt = rcnt = 0;
         int n = grid.size();
         int m = grid[0].size();
-        for(int i=0;i<n;i++){
-            for(int j=0;j<m;j++){
-                if(grid[i][j]==2){
-                    rcnt++;
-                }
-                if(grid[i][j]==1){
-                    fcnt++;
-                }
-            }
-        }
-        int min = 0;
-        vector<vector<int>> grid2;
-        while(fcnt){
-            int prevfcnt = fcnt;
-            grid2 = grid;
+        int cnt = 0;
+        
+        while(1){
+            vector<vector<int>> dp = grid;
+            int f = 0;
             for(int i=0;i<n;i++){
                 for(int j=0;j<m;j++){
-                    if(grid[i][j]==2){
-                        rec(grid2,i-1,j,n,m);
-                        rec(grid2,i,j-1,n,m);
-                        rec(grid2,i+1,j,n,m);
-                        rec(grid2,i,j+1,n,m);
+                    if(grid[i][j]==0 || grid[i][j]==2) continue;
+                    if((i+1)<n && grid[i+1][j]==2){
+                        dp[i][j] = 2;
+                        f = 1;
+                    }
+                    if((j+1)<m && grid[i][j+1]==2){
+                        dp[i][j] = 2;
+                        f = 1;
+                    }
+                    if((i-1)>=0 && grid[i-1][j]==2){
+                        dp[i][j] = 2;
+                        f = 1;
+                    }
+                    if((j-1)>=0 && grid[i][j-1]==2){
+                        dp[i][j] = 2;
+                        f = 1;
                     }
                 }
             }
-            grid = grid2;
-            if(fcnt>=prevfcnt) return -1;
-            min++;
+            if(!f) break;
+            cnt++;
+            grid = dp;
         }
-        return min;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(grid[i][j]==1){
+                    return -1;
+                }
+            }
+        }
+        return cnt;
     }
 };
