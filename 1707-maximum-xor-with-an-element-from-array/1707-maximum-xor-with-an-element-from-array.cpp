@@ -1,4 +1,3 @@
-
 class Solution {
 public:
     struct TrieNode{
@@ -6,24 +5,22 @@ public:
         TrieNode* child[2];
         TrieNode(){
             isEnd = 0;
-            child[0]=child[1]=NULL;
+            child[0] = child[1] = NULL;
         }
     };
 
-    void Insert(TrieNode* T,int x){
-        TrieNode* root = T;
+    void Insert(TrieNode* root,int x){
         for(int i=30;i>=0;i--){
-            int bit = (1<<i) & x ? 1: 0;
+            int bit = (x>>i) & 1;
             if(!root->child[bit]){
-                root->child[bit] =  new TrieNode();
+                root->child[bit] = new TrieNode();
             }
             root = root->child[bit];
         }
         root->isEnd = 1;
     }
 
-    int maxXor(TrieNode* T,int x){
-        TrieNode* root = T;
+    int maxXor(TrieNode* root,int x){
         int ans = 0;
         for(int i=30;i>=0;i--){
             int bit = (x>>i) & 1;
@@ -37,33 +34,29 @@ public:
         }
         return ans;
     }
-    
+
     vector<int> maximizeXor(vector<int>& a, vector<vector<int>>& queries) {
         int n = a.size();
         int m = queries.size();
-        
-        vector<vector<int>> offQ;
-        
-        for(int j=0;j<m;j++){
-            offQ.push_back({queries[j][1],queries[j][0],j});
-        }
-        
-        sort(a.begin(),a.end());
-        sort(offQ.begin(),offQ.end());
-        
-        // for(auto it: offQ) cout<<it[0]<<" "<<it[1]<<" "<<it[2]<<"\n";
-        
-        int i=0;
         vector<int> ans(m);
+        sort(a.begin(),a.end());
+        vector<vector<int>> q;
+        for(int i=0;i<m;i++){
+            q.push_back({queries[i][1],queries[i][0],i});
+        }
+        sort(q.begin(),q.end());
+        
+        int j=0;
         TrieNode* root = new TrieNode();
 
-        for(auto it: offQ){
-            while(i<n && a[i]<=it[0]){
-                Insert(root,a[i]);
-                i++;
+        for(int i=0;i<m;i++){
+            auto it = q[i];
+            while(j<n && a[j]<=it[0]){
+                Insert(root,a[j]);
+                j++;
             }
 
-            if(i!=0){
+            if(j!=0){
                 ans[it[2]] = maxXor(root,it[1]);
             }
             else{
