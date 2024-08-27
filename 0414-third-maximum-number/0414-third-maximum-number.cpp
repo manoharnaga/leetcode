@@ -1,24 +1,25 @@
 class Solution {
 public:
+    typedef long long ll;
     int thirdMax(vector<int>& nums) {
-        long long a,b,c;
-        a = b = c = numeric_limits<long long>::min();
+        ll m1,m2,m3;
+        m1 = m2 = m3 = LLONG_MIN;
         for(int i=0;i<nums.size();i++){
-            // cout<<a<<" "<<b<<" "<<c<<"\n";
-            if(c<nums[i]){
-                a = b;
-                b = c;
-                c = nums[i];
+            if(m3<nums[i]){
+                m1 = m2;
+                m2 = m3;
+                m3 = nums[i];
             }
-            else if(b<nums[i] && nums[i]!=c){
-                a = b;
-                b = nums[i];
+            else if(m2<nums[i] && m3!=nums[i]){
+                m1 = m2;
+                m2 = nums[i];
             }
-            else if(a<nums[i] && nums[i]!=b && nums[i]!=c){
-                a = nums[i];
+            else if(m1<nums[i] && m2!=nums[i] && m3!=nums[i]){
+                m1 = nums[i];
             }
         }
-        if(a==numeric_limits<long long>::min()) return c;
-        return a;
+        // cout<<m1<<" "<<m2<<" "<<m3<<"\n";
+        if(m1==LLONG_MIN) return m3;
+        return m1;
     }
 };
