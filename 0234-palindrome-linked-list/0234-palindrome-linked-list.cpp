@@ -10,49 +10,40 @@
  */
 class Solution {
 public:
-    int getSize(ListNode* head){
-        ListNode* cur = head;
+    bool isPalindrome(ListNode* head) {
+        if(!head->next) return true;
+        
         int n = 0;
+        ListNode *slow,*fast,*prev,*cur,*next2;
+        cur = head;
+        
         while(cur){
             n++;
             cur = cur->next;
         }
-        return n;
-    }
-    bool isPalindrome(ListNode* head) {
-        if(!head->next)         return true;
-        if(!head->next->next)   return (head->val==head->next->val);
         
-        int n = getSize(head);
-        if(n==3)    return (head->val==head->next->next->val);
-        
-        ListNode *cur,*prev,*next2;
         prev = nullptr;
         cur = head;
-        next2 = cur->next;
+        next2 = head->next;
         
-        for(int i=0;i<(n/2);i++){
-            // cout<<i<<" "<<cur->val<<" "<<next2->val<<" k1\n";
-            next2 = cur->next;
+        fast = head;
+        while(fast && fast->next){
+            // cout<<fast->val<<" "<<fast->next->val<<"\n";
+            
+            fast = fast->next->next;
             cur->next = prev;
             prev = cur;
-            if(i<(n/2)-1) cur = next2;
-            // cout<<i<<" "<<cur->val<<" "<<next2->val<<" k2\n";
+            cur = next2;
+            if(next2) next2 = next2->next;
         }
         
-        if(n%2) next2 = next2->next;
-        // cout<<n<<"\n";
-        // cout<<cur->val<<" "<<cur->next->val<<" "<<next2->val<<"\n";
-        
-        
-        while(cur && next2){
-            if(cur->val!=next2->val) return false;
+        if(n%2) cur = cur->next;
+        while(prev && cur){
+            if(prev->val!=cur->val) return false;
+            prev = prev->next;
             cur = cur->next;
-            next2 = next2->next;
         }
-        // cout<<"hyeaa\n";
-        if(cur || next2) return false;
-        // cout<<"hoyaa\n";
+        if(cur || prev) return false;
         return true;
     }
 };
