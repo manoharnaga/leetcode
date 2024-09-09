@@ -1,32 +1,27 @@
 class Solution {
 public:
-    int nearestExit(vector<vector<char>>& maze, vector<int>& e) {
-        int n = maze.size();
-        int m = maze[0].size();
-        queue<pair<int,int>> q;
-        q.push({e[0],e[1]});
-        vector<vector<int>> dir = {{1,0},{0,1},{-1,0},{0,-1}};
-
-        int moves = 1;
-        maze[e[0]][e[1]] = '+';
+    int nearestExit(vector<vector<char>>& a, vector<int>& e) {
+        int n = a.size();
+        int m = a[0].size();
+        vector<vector<int>> dir = {{1,0},{-1,0},{0,1},{0,-1}};
+        queue<pair<pair<int,int>,int>> q;
+        q.push({{e[0],e[1]},0});
+        a[e[0]][e[1]] = '+';
         while(!q.empty()){
-            int sz = q.size();
-            // all nodes in cur level
-            for(int i=0;i<sz;i++){
-                auto [h1,h2] = q.front();
-                q.pop();
-                for(int l=0;l<4;l++){
-                    int x = h1+dir[l][0];
-                    int y = h2+dir[l][1];
-                    if(x<0 || x>=n || y<0 || y>=m || maze[x][y]=='+') continue; 
-                    if(x==0 || y==0 || x==(n-1) || y==(m-1)) return moves;
-
-                    maze[x][y] = '+';
-                    q.push({x,y});
+            auto [x,y] = q.front().first;
+            int moves = q.front().second;
+            q.pop();
+            for(auto it: dir){
+                int i = x+it[0];
+                int j = y+it[1];
+                if(i<0 || j<0 || i==n || j==m){
+                    if(x!=e[0] || y!=e[1])  return moves;
+                }
+                else if(a[i][j]=='.'){  
+                    a[i][j] = '+';
+                    q.push({{i,j},moves+1});
                 }
             }
-            // at each level increase moves
-            moves++;
         }
         return -1;
     }
