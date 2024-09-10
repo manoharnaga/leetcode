@@ -3,34 +3,26 @@ public:
     typedef long long ll;
     long long maxScore(vector<int>& nums1, vector<int>& nums2, int k) {
         int n = nums1.size();
-        vector<ll> a(n);
-        vector<pair<int,int>> v;
-        for(int i=0;i<n;i++) v.push_back({nums2[i],i});
-        sort(v.begin(),v.end());
+        vector<pair<ll,ll>> v;
         for(int i=0;i<n;i++){
-            a[i] = nums1[v[i].second];
+            v.push_back({nums2[i],nums1[i]});
         }
+        sort(v.begin(),v.end());
         priority_queue<ll,vector<ll>,greater<ll>> pq;
-        ll sum = 0;
-        for(int i=n-1;i>(n-1-k);i--){
-            sum += a[i];
-            pq.push(a[i]);
+        ll sum = 0,ans = 0;
+        for(int i=n-1;i>=(n-k);i--){
+            sum += v[i].second;
+            pq.push(v[i].second);
         }
-        a[n-k] = sum;
-
-        for(int i=(n-1-k);i>=0;i--){
-            ll x = a[i];
+        ans = max(ans,sum*v[n-k].first);
+        for(int i=n-k-1;i>=0;i--){
             ll top = pq.top();
-            if(top<x){
+            if(top<v[i].second){
+                sum = sum-top+v[i].second;
                 pq.pop();
-                pq.push(x);
-                sum = sum-top+x;
+                pq.push(v[i].second);
             }
-            a[i] = sum;
-        }
-        ll ans = 0;
-        for(int i=0;i<=(n-k);i++){
-            ans = max(ans,v[i].first*a[i]);
+            ans = max(ans,sum*v[i].first);
         }
         return ans;
     }
