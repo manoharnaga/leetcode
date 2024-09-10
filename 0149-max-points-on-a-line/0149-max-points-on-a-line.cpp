@@ -1,25 +1,22 @@
 class Solution {
 public:
-    int maxPoints(vector<vector<int>>& a) {
-        int n = a.size();
-        if(n<=2) return n;
-        int ans = 0;
+    int maxPoints(vector<vector<int>>& v) {
+        int n = v.size();
+        int ans = 1;
         for(int i=0;i<n;i++){
             map<double,int> mp;
             for(int j=i+1;j<n;j++){
-                if((a[j][0]-a[i][0])==0){
+                if(v[j][0]==v[i][0]){
                     mp[INT_MAX]++;
                 }
                 else{
-                    double slope = ((double)(a[j][1]-a[i][1]))/(a[j][0]-a[i][0]);
+                    double slope = (((double)v[j][1]-v[i][1]))/(v[j][0]-v[i][0]);
                     mp[slope]++;
                 }
             }
-            int h = 0;
             for(auto it: mp){
-                h = max(h,it.second+1);
+                ans = max(ans,it.second+1);
             }
-            ans = max(ans,h);
         }
         return ans;
     }
