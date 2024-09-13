@@ -6,28 +6,24 @@ public:
             return -1;
         }
         vector<vector<int>> directions{{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
-        vector<vector<bool>> visited(m, vector<bool>(n, false));
-        priority_queue<vector<int>, vector<vector<int>>, greater<>> pq;
-        pq.push({0, 0, 0}); // (t, r, c)
-        while (!pq.empty()) {
-            auto cur = pq.top();
-            int t = cur[0], r = cur[1], c = cur[2];
+        vector<vector<bool>> vist(m, vector<bool>(n, false));
+        priority_queue<vector<int>, vector<vector<int>>, greater<vector<int>>> pq;
+        pq.push({0,0,0});
+        while(!pq.empty()){
+            auto it = pq.top();
+            int t = it[0], r = it[1], c = it[2];
             pq.pop();
-            if (r == m - 1 && c == n - 1) {
-                return t;
-            }
-            if (visited[r][c]) {
-                continue;
-            }
-            visited[r][c] = true;
-            for (const auto& dir : directions) {
-                int nr = r + dir[0], nc = c + dir[1];
-                if (nr < 0 || nr >= m || nc < 0 || nc >= n || visited[nr][nc]) {
-                    continue;
-                }
-                bool wait = (grid[nr][nc] - t) % 2 == 0;
-                int nt = max(grid[nr][nc] + wait, t + 1);
-                pq.push({nt, nr, nc});
+            if(r==(m-1) && c==(n-1)) return t;
+            if(vist[r][c]) continue;
+            
+            vist[r][c] = true;
+            for(auto& dir: directions){
+                int rr = r+dir[0];
+                int cc = c+dir[1];
+                if(rr<0 || cc<0 || rr==m || cc==n || vist[rr][cc]) continue;
+                int wait = (grid[rr][cc]-t)%2==0;
+                int tt = max(grid[rr][cc]+wait,t+1);
+                pq.push({tt,rr,cc});
             }
         }
         return -1;
