@@ -1,19 +1,33 @@
 class MyCalendar {
 public:
-    vector<vector<int>> v;
+    map<int,int> mp;
     MyCalendar() {
-        // v.resize(0);
+        mp.clear();
     }
     
     bool book(int start, int end) {
-        for(auto it: v){
-            if(max(it[0],start)<min(it[1],end)) return false;
+        end--;
+        if(mp.empty()){
+            mp[start] = end;
+            return true;
         }
-        v.push_back({start,end});
+        auto it = mp.lower_bound(end);
+        if(it==mp.begin()){
+            if(max(start,it->first)<=min(end,it->second)) return false;
+        }
+        else if(it==mp.end()){
+            it--;
+            if(max(start,it->first)<=min(end,it->second)) return false;
+        }
+        else{
+            if(max(start,it->first)<=min(end,it->second)) return false;
+            it--;
+            if(max(start,it->first)<=min(end,it->second)) return false;
+        }
+        mp[start] = end;
         return true;
     }
 };
-
 /**
  * Your MyCalendar object will be instantiated and called as such:
  * MyCalendar* obj = new MyCalendar();
