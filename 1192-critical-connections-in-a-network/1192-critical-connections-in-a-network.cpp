@@ -1,55 +1,36 @@
 class Solution {
 public:
-    vector<vector<int>> ans;
-    void IS_BRIDGE(int v,int to){
-        ans.push_back({v,to});
-    }
-    int n; // number of nodes
-    vector<vector<int>> adj; // adjacency list of graph
-
-    vector<bool> visited;
-    vector<int> tin, low;
+    vector<vector<int>> res;
+    vector<int> disc,low;
     int timer;
-
-    void dfs(int v, int p = -1) {
-        visited[v] = true;
-        tin[v] = low[v] = timer++;
-        bool parent_skipped = false;
-        for (int to : adj[v]) {
-            if (to == p && !parent_skipped) {
-                parent_skipped = true;
-                continue;
+    void dfs(int u,int par,vector<vector<int>>& adj){
+        disc[u] = low[u] = timer++;
+        for(int v: adj[u]){
+            if(v==par) continue;
+            if(disc[v]==-1){
+                dfs(v,u,adj);
+                low[u] = min(low[u],low[v]);
+                if(low[v]>disc[u]){
+                    res.push_back({u,v});
+                }
             }
-            if (visited[to]) {
-                low[v] = min(low[v], tin[to]);
-            } else {
-                dfs(to, v);
-                low[v] = min(low[v], low[to]);
-                if (low[to] > tin[v])
-                    IS_BRIDGE(v, to);
+            else{
+                low[u] = min(low[u],disc[v]);
             }
         }
     }
-
-    void find_bridges() {
+    
+    vector<vector<int>> criticalConnections(int n, vector<vector<int>>& conn) {
         timer = 0;
-        visited.assign(n, false);
-        tin.assign(n, -1);
-        low.assign(n, -1);
-        for (int i = 0; i < n; ++i) {
-            if (!visited[i])
-                dfs(i);
-        }
-    }
-
-    vector<vector<int>> criticalConnections(int N, vector<vector<int>>& connections) {
-        n = N;
-        adj = vector<vector<int>> (n);
-        for(auto it: connections){
+        disc = low = vector<int>(n,-1);
+        vector<vector<int>> adj(n);
+        
+        for(auto& it: conn){
             adj[it[0]].push_back(it[1]);
             adj[it[1]].push_back(it[0]);
         }
-        find_bridges();
-        return ans;
+        
+        dfs(0,-1,adj);
+        return res;
     }
 };
