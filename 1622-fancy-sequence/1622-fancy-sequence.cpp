@@ -27,9 +27,9 @@ public:
     }
     
     void append(int val) {
-        v.push_back({add,mult});
-        a[n++] = val;
-        // a[n++] = ((val-add+mod)%mod)*powermod(mult,mod-2)%mod;
+        // v.push_back({add,mult});
+        // a[n++] = val;
+        a[n++] = ((val-add+mod)%mod)*powermod(mult,mod-2)%mod;
     }
     
     void addAll(int inc) {
@@ -56,10 +56,10 @@ public:
         
         
         
-        ll t1 = v[idx][0], t2 = v[idx][1];
-        res -= t1;
-        res = (res+mod)%mod;
-        res = (res*powermod(t2,mod-2))%mod;   
+        // ll t1 = v[idx][0], t2 = v[idx][1];
+        // res -= t1;
+        // res = (res+mod)%mod;
+        // res = (res*powermod(t2,mod-2))%mod;   
         
         res *= mult;
         res %= mod;
