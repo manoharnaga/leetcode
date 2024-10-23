@@ -26,29 +26,28 @@ public:
     }
 
     int func(int kx,int ky,int x,int y){
-        if(kx<0 || ky<0 || kx==50 || ky==50) return INT_MAX;
+        // if(kx<0 || ky<0 || kx==50 || ky==50) return INT_MAX;
         
-        int vist[50][50];memset(vist,0,sizeof(vist));
+        int vist[50][50] = {};
         
         vector<vector<int>> dir = {{2,1},{2,-1},{-2,1},{-2,-1},{1,2},{1,-2},{-1,2},{-1,-2}};
-        queue<pair<int,int>> q;
-        q.push({kx,ky});
+        vector<pair<int,int>> q;
+        q.push_back({kx,ky});
         int moves = 0;
         while(!q.empty()){
-            int sz = q.size();
+            vector<pair<int,int>> q1;
             moves++;
-            for(int i=0;i<sz;i++){
-                auto [hx,hy] = q.front();
-                q.pop();
-                for(auto it: dir){
+            for(auto& [hx,hy]: q){
+                for(auto& it: dir){
                     int nx = hx+it[0];
                     int ny = hy+it[1];
                     if(nx<0 || ny<0 || nx>=50 || ny>=50 || vist[nx][ny]) continue;
                     if(nx==x && ny==y) return moves;
                     vist[nx][ny] = 1;
-                    q.push({nx,ny});
+                    q1.push_back({nx,ny});
                 }
             }
+            swap(q,q1);
         }
         return 0;
     }
@@ -74,12 +73,12 @@ public:
         pos.push_back({kx,ky});
         n = pos.size();
         memset(dp,-1,sizeof(dp));
-        // for(int i=0;i<n;i++){
-        //     for(int j=i+1;j<n;j++){
-        //         moves[i][j] = moves[j][i] = func(pos[i][0],pos[i][1],pos[j][0],pos[j][1]);
-        //     }
-        // }
-        for(int i=0;i<n;i++) bfs(i,pos);
+        for(int i=0;i<n;i++){
+            for(int j=i+1;j<n;j++){
+                moves[i][j] = moves[j][i] = func(pos[i][0],pos[i][1],pos[j][0],pos[j][1]);
+            }
+        }
+        // for(int i=0;i<n;i++) bfs(i,pos);
         return rec(n-1,0,n-1,0);
     }
 };
